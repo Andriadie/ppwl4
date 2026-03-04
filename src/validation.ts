@@ -42,6 +42,27 @@ app.onAfterHandle(({ response }: { response: unknown }) => {
     }
   })
 
+  app.onError(({ code, error, set }) => {
+    if (code === "VALIDATION") {
+      set.status = 400
+      return {
+        success: false,
+        error: "Validation Error", 
+      }
+    }
+
+    if (code === "NOT_FOUND") {
+      set.status = 404
+      return {
+        message: "Route not found"
+      }
+    }
+
+    set.status = 500
+    return {
+      message: "Internal Server Error"
+    }
+  })
   
 app.get(
     '/products/:id', 
@@ -122,3 +143,17 @@ app.get("/product", () => {
       })
     })
   })
+
+
+app.post(
+    "/login",
+    ({ body }) => body,
+    {
+      body: t.Object({
+        email: t.String({ format: "email" }),
+        password: t.String({ minLength: 8 }) 
+      })
+    }
+  )
+
+
