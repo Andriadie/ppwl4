@@ -23,12 +23,3 @@ const app = new Elysia()
 
 console.log(`🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`);
 
-app.get(
-  "/products/:id", (context) => {context.params, context.query},
-  {
-    params: t.Object({
-        id: t.Number() 
-    }),
-    query: t.Object({
-      sort: t.String({ enum: ["asc", "desc"] })})
-})
