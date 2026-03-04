@@ -77,3 +77,25 @@ app.get(
       })
     }
   )
+
+app.get(
+    "/admin",
+    () => ({
+      stats: 99
+    }),
+    {
+      response: t.Object({
+        stats: t.Number()
+      }), 
+      
+      beforeHandle({ headers, set }) {
+        if (headers.authorization !== "Bearer 123") {
+          set.status = 401
+          return {
+            success: false,
+            message: "Unauthorized"
+          }
+        }
+      }
+    }
+  )
